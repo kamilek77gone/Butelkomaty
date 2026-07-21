@@ -1,0 +1,194 @@
+{
+  "data": "2026-07-21T14:01:30.246373",
+  "katalog_projektu": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty",
+  "zasada": "Żaden plik nie został skasowany. Elementy zostały wyłącznie przeniesione.",
+  "liczba_operacji": 31,
+  "operacje": [
+    {
+      "status": "przeniesiono",
+      "źródło": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\dino_js",
+      "cel": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\archive\\dino\\dino_js",
+      "powód": ""
+    },
+    {
+      "status": "przeniesiono",
+      "źródło": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\dino_payload",
+      "cel": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\archive\\dino\\dino_payload",
+      "powód": ""
+    },
+    {
+      "status": "przeniesiono",
+      "źródło": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\baza_biedronka_recyklomaty.json",
+      "cel": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\data\\baza_biedronka_recyklomaty.json",
+      "powód": ""
+    },
+    {
+      "status": "przeniesiono",
+      "źródło": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\baza_biedronka_recyklomaty_BACKUP_2026-07-20_00-56-11.json",
+      "cel": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\data\\baza_biedronka_recyklomaty_BACKUP_2026-07-20_00-56-11.json",
+      "powód": ""
+    },
+    {
+      "status": "przeniesiono",
+      "źródło": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\baza_biedronka_recyklomaty_BACKUP_2026-07-20_01-10-07.json",
+      "cel": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\data\\baza_biedronka_recyklomaty_BACKUP_2026-07-20_01-10-07.json",
+      "powód": ""
+    },
+    {
+      "status": "przeniesiono",
+      "źródło": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\baza_biedronka_recyklomaty_BACKUP_2026-07-20_01-29-31.json",
+      "cel": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\data\\baza_biedronka_recyklomaty_BACKUP_2026-07-20_01-29-31.json",
+      "powód": ""
+    },
+    {
+      "status": "przeniesiono",
+      "źródło": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\baza_biedronka_recyklomaty_BACKUP_2026-07-20_01-34-04.json",
+      "cel": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\data\\baza_biedronka_recyklomaty_BACKUP_2026-07-20_01-34-04.json",
+      "powód": ""
+    },
+    {
+      "status": "przeniesiono",
+      "źródło": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\baza_dino_recyklomaty.json",
+      "cel": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\data\\baza_dino_recyklomaty.json",
+      "powód": ""
+    },
+    {
+      "status": "przeniesiono",
+      "źródło": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\baza_lidl_recyklomaty.json",
+      "cel": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\data\\baza_lidl_recyklomaty.json",
+      "powód": ""
+    },
+    {
+      "status": "przeniesiono",
+      "źródło": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\biedronka.json",
+      "cel": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\data\\biedronka.json",
+      "powód": ""
+    },
+    {
+      "status": "przeniesiono",
+      "źródło": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\dino_playwright.py",
+      "cel": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\scrapers\\dino_playwright.py",
+      "powód": ""
+    },
+    {
+      "status": "przeniesiono",
+      "źródło": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\miasta_biedronka.json",
+      "cel": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\data\\miasta_biedronka.json",
+      "powód": ""
+    },
+    {
+      "status": "przeniesiono",
+      "źródło": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\pobierz_dane.py",
+      "cel": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\scrapers\\pobierz_dane.py",
+      "powód": ""
+    },
+    {
+      "status": "przeniesiono",
+      "źródło": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\scal_bazy.py",
+      "cel": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\tools\\scal_bazy.py",
+      "powód": ""
+    },
+    {
+      "status": "przeniesiono",
+      "źródło": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\scraper_biedronka.py",
+      "cel": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\scrapers\\scraper_biedronka.py",
+      "powód": ""
+    },
+    {
+      "status": "przeniesiono",
+      "źródło": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\scraper_lidl.py",
+      "cel": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\scrapers\\scraper_lidl.py",
+      "powód": ""
+    },
+    {
+      "status": "przeniesiono",
+      "źródło": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\sklepy_mapa.json",
+      "cel": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\data\\sklepy_mapa.json",
+      "powód": ""
+    },
+    {
+      "status": "przeniesiono",
+      "źródło": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\sprawdz_biedronka.py",
+      "cel": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\archive\\analizy\\sprawdz_biedronka.py",
+      "powód": ""
+    },
+    {
+      "status": "przeniesiono",
+      "źródło": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\sprawdz_js.py",
+      "cel": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\archive\\analizy\\sprawdz_js.py",
+      "powód": ""
+    },
+    {
+      "status": "przeniesiono",
+      "źródło": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\sprawdz_pliki_js.py",
+      "cel": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\archive\\analizy\\sprawdz_pliki_js.py",
+      "powód": ""
+    },
+    {
+      "status": "przeniesiono",
+      "źródło": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\szukaj_api.py",
+      "cel": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\archive\\analizy\\szukaj_api.py",
+      "powód": ""
+    },
+    {
+      "status": "przeniesiono",
+      "źródło": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\test_api.py",
+      "cel": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\archive\\tests\\test_api.py",
+      "powód": ""
+    },
+    {
+      "status": "przeniesiono",
+      "źródło": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\test_icon8.py",
+      "cel": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\archive\\tests\\test_icon8.py",
+      "powód": ""
+    },
+    {
+      "status": "przeniesiono",
+      "źródło": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\test_inventory.py",
+      "cel": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\archive\\tests\\test_inventory.py",
+      "powód": ""
+    },
+    {
+      "status": "przeniesiono",
+      "źródło": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\test_karta_sklepu.py",
+      "cel": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\archive\\tests\\test_karta_sklepu.py",
+      "powód": ""
+    },
+    {
+      "status": "przeniesiono",
+      "źródło": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\test_miasta.py",
+      "cel": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\archive\\tests\\test_miasta.py",
+      "powód": ""
+    },
+    {
+      "status": "przeniesiono",
+      "źródło": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\test_puste_api.py",
+      "cel": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\archive\\tests\\test_puste_api.py",
+      "powód": ""
+    },
+    {
+      "status": "przeniesiono",
+      "źródło": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\test_recyklomat.py",
+      "cel": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\archive\\tests\\test_recyklomat.py",
+      "powód": ""
+    },
+    {
+      "status": "przeniesiono",
+      "źródło": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\test_recyklomat_html.py",
+      "cel": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\archive\\tests\\test_recyklomat_html.py",
+      "powód": ""
+    },
+    {
+      "status": "przeniesiono",
+      "źródło": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\test_recyklomat_walbrzych.py",
+      "cel": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\archive\\tests\\test_recyklomat_walbrzych.py",
+      "powód": ""
+    },
+    {
+      "status": "przeniesiono",
+      "źródło": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\test_special.py",
+      "cel": "C:\\Users\\SURFACE\\Documents\\GitHub\\Butelkomaty\\butelkomaty\\src\\butelkomaty\\archive\\tests\\test_special.py",
+      "powód": ""
+    }
+  ]
+}

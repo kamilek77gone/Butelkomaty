@@ -1,0 +1,34 @@
+[build-system]
+requires = ["briefcase"]
+build-backend = "briefcase.buildsys"
+
+[project]
+name = "butelkomaty"
+version = "0.0.1"
+description = "Aplikacja do obsługi butelkomatów"
+dependencies = [
+    "toga",
+    "toga-winforms",
+]
+license = "MIT"
+license-files = ["LICENSE"]
+
+[tool.briefcase]
+project_name = "butelkomaty"
+bundle = "com.example"
+version = "0.0.1"
+url = "https://example.com/butelkomaty"
+author = "kamilek77gone"
+author_email = "kamilek77gone@example.com"
+
+[tool.briefcase.app.butelkomaty]
+formal_name = "Butelkomaty"
+description = "Aplikacja do obsługi butelkomatów"
+sources = ["src/butelkomaty"]
+requires = [
+    "toga",
+    "toga-winforms",
+]
+
+[tool.briefcase.app.butelkomaty.windows]
+requires = []

@@ -1,0 +1,1 @@
+const s=(s,e=(s,e)=>s-e)=>(t,c)=>e(t[s],c[s]),e=s=>s.charAt(0).toUpperCase()+s.slice(1),t=(s,e)=>{const t=[];for(let c=0;c<s.length;c+=e)t.push([...s.slice(c,c+e)]);return t};export{t as c,e as f,s as u};

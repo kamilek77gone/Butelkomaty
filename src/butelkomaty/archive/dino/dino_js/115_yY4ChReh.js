@@ -1,0 +1,1 @@
+import{H as t,U as n,Z as s,V as e}from"./fkEbvKZd.js";const o={class:"hidden p-4 font-semibold text-xs text-center w-[226px] lg:block"},p=t({name:"inpost-popup-content",__name:"inpost-popup-content",setup:t=>(t,p)=>(e(),n("div",o,s(t.$t("MAP__INPOST_AVAILABLE")),1))}),a=Object.assign(p,{__name:"InpostPopupContent"});export{a as default};

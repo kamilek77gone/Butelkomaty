@@ -1,0 +1,1 @@
+import{H as t,U as e,Z as o,V as a}from"./fkEbvKZd.js";const n={class:"hidden p-4 font-semibold text-xs text-center w-[226px] lg:block"},s=t({name:"recyklomat-popup-content",__name:"recyklomat-popup-content",setup:t=>(t,s)=>(a(),e("div",n,o(t.$t("MAP__RECYKLOMAT_AVAILABLE")),1))}),p=Object.assign(s,{__name:"RecyklomatPopupContent"});export{p as default};
