@@ -1,0 +1,1 @@
+"""Modele danych aplikacji Butelkomaty."""

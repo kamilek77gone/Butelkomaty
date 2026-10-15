@@ -1,1 +1,0 @@
-import{_ as t}from"./BCo6x5W8.js";import{U as e,V as a,ab as s}from"./fkEbvKZd.js";const l={class:"text-xl font-medium leading-7 text-zinc-600 md:text-2xl md:leading-8 xl:text-3xl xl:leading-9"},n=Object.assign(t({},[["render",function(t,n){return a(),e("h2",l,[s(t.$slots,"default")])}]]),{__name:"WidgetTitle"});export{n as default};

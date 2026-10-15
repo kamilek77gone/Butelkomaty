@@ -1,1 +1,0 @@
-import"./LUaqN-IZ.js";const t=t=>{if(!t)return null;if(t.startsWith("data:")||t.startsWith("blob:")||!t.includes("/media/"))return t;const s=t.indexOf("#"),n=-1!==s?t.substring(0,s):t;if(new RegExp("[?&]v=1\\b").test(n))return t;const r=-1!==s?t.substring(s):"",e=n.includes("?")?"&":"?";return`${n}${e}v=1${r}`};export{t as a};

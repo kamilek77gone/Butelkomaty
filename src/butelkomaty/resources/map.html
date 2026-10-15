@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Butelkomaty Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; width: 100%; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        #map { height: 100%; width: 100%; }
+        .custom-popup .leaflet-popup-content-wrapper { border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
+        .custom-popup .leaflet-popup-content { margin: 12px 16px; min-width: 220px; }
+        .custom-popup .leaflet-popup-tip { box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
+        .popup-title { font-weight: 600; font-size: 15px; color: #1a1a1a; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+        .popup-chain { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
+        .chain-zabka { background: #fff3e0; color: #e65100; }
+        .chain-biedronka { background: #e8f5e9; color: #1b5e20; }
+        .chain-lidl { background: #fce4ec; color: #880e4f; }
+        .chain-dino { background: #e3f2fd; color: #0d47a1; }
+        .chain-netto { background: #f3e5f5; color: #4a148c; }
+        .popup-address { font-size: 13px; color: #444; margin: 4px 0; line-height: 1.4; }
+        .popup-hours { font-size: 12px; color: #666; margin-top: 4px; }
+        .popup-status { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 16px; font-size: 11px; font-weight: 600; margin-top: 8px; }
+        .status-aktywny { background: #e8f5e9; color: #1b5e20; }
+        .status-inny { background: #fff3e0; color: #e65100; }
+        .popup-type { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: #555; margin-top: 4px; }
+        .marker-icon { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.3); border: 2px solid white; }
+        .cluster-icon { background: rgba(30, 136, 229, 0.9) !important; color: white !important; border: none !important; width: 40px !important; height: 40px !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; font-weight: 700 !important; }
+        .leaflet-container { font-family: inherit; }
+        .leaflet-popup-close-button { font-size: 18px; color: #888; }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <script>
+// --- CONFIG ---
+        const CHAIN_COLORS = {
+            'Żabka': '#ff9800', 'Biedronka': '#4caf50', 'Lidl': '#e91e63',
+            'Dino': '#2196f3', 'Netto': '#9c27b0'
+        };
+        const CHAIN_ICONS = {
+            'Żabka': '🏪', 'Biedronka': '🛒', 'Lidl': '🛍️', 'Dino': '🦖', 'Netto': '🏬'
+        };
+        const TYPE_ICONS = { 'automat': '♻️', 'ręczna': '🤲' };
+
+        // --- MAP INIT ---
+        const map = L.map('map', {
+            zoomControl: false,
+            attributionControl: false,
+            preferCanvas: true
+        }).setView([52.0, 19.0], 6);
+
+        L.control.zoom({ position: 'bottomright' }).addTo(map);
+        L.control.attribution({ prefix: false }).addTo(map);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19, attribution: '&copy; OpenStreetMap'
+        }).addTo(map);
+
+        // --- CLUSTER GROUP ---
+        const markers = L.markerClusterGroup({
+            chunkedLoading: true,
+            maxClusterRadius: 50,
+            iconCreateFunction: function(cluster) {
+                const count = cluster.getChildCount();
+                const size = count < 100 ? 'small' : count < 1000 ? 'medium' : 'large';
+                return L.divIcon({
+                    html: `<div class="cluster-icon">${count}</div>`,
+                    className: `marker-cluster marker-cluster-${size}`,
+                    iconSize: L.point(40, 40)
+                });
+            },
+            spiderfyOnMaxZoom: true,
+            showCoverageOnHover: false,
+            zoomToBoundsOnClick: true
+        });
+        map.addLayer(markers);
+
+        // --- STATE ---
+        let allMarkers = [];
+        let activeFilters = { 'Żabka': true, 'Biedronka': true, 'Lidl': true, 'Dino': true, 'Netto': true };
+        let selectedMarker = null;
+// --- ICON FACTORY ---
+        function createMarkerIcon(chain, type) {
+            const color = CHAIN_COLORS[chain] || '#1e88e5';
+            const icon = CHAIN_ICONS[chain] || '📍';
+            return L.divIcon({
+                html: `<div class="marker-icon" style="background:${color}">${icon}</div>`,
+                className: 'custom-marker',
+                iconSize: [36, 36],
+                iconAnchor: [18, 36],
+                popupAnchor: [0, -36]
+            });
+        }
+
+        // --- POPUP CONTENT ---
+        function createPopupContent(p) {
+            const chainClass = `chain-${p.siec.toLowerCase()}`;
+            const statusClass = p.status === 'aktywny' ? 'status-aktywny' : 'status-inny';
+            const statusLabel = p.status === 'aktywny' ? 'Działający' : p.status;
+            const hours = p.godziny ? Object.entries(p.godziny).map(([d, h]) => `${d.slice(0,3)}: ${h}`).join('<br>') : 'Brak danych';
+            return `
+                <div>
+                    <div class="popup-title">
+                        <span class="popup-chain ${chainClass}">${p.siec}</span>
+                    </div>
+                    <div class="popup-address">${p.adres_pelny || `${p.ulica} ${p.numer}, ${p.kod} ${p.miasto}`}</div>
+                    <div class="popup-type">${TYPE_ICONS[p.typ_zbiorki] || ''} ${p.typ_zbiorki_opis || p.typ_zbiorki}</div>
+                    <div class="popup-hours">${hours}</div>
+                    <div class="popup-status ${statusClass}">● ${statusLabel}</div>
+                </div>
+            `;
+        }
+
+        // --- MARKER CREATION ---
+        function addMarkers(geojson) {
+            markers.clearLayers();
+            allMarkers = [];
+            geojson.features.forEach(f => {
+                const p = f.properties;
+                const marker = L.marker([f.geometry.coordinates[1], f.geometry.coordinates[0]], {
+                    icon: createMarkerIcon(p.siec, p.typ_zbiorki)
+                });
+                marker.bindPopup(createPopupContent(p), { className: 'custom-popup', maxWidth: 280 });
+                marker.on('click', () => {
+                    selectedMarker = p;
+                    window.postMessage({type: 'marker_click', data: JSON.stringify(p)}, '*');
+                });
+                markers.addLayer(marker);
+                allMarkers.push({ marker, chain: p.siec, visible: true });
+            });
+            applyFilters();
+        }
+// --- FILTERING ---
+        function applyFilters() {
+            allMarkers.forEach(m => {
+                const shouldShow = activeFilters[m.chain];
+                if (shouldShow && !m.visible) {
+                    markers.addLayer(m.marker);
+                    m.visible = true;
+                } else if (!shouldShow && m.visible) {
+                    markers.removeLayer(m.marker);
+                    m.visible = false;
+                }
+            });
+        }
+
+        function setFilter(chain, enabled) {
+            activeFilters[chain] = enabled;
+            applyFilters();
+        }
+
+        function setAllFilters(enabled) {
+            Object.keys(activeFilters).forEach(k => activeFilters[k] = enabled);
+            applyFilters();
+        }
+
+        function fitToMarkers() {
+            const visible = allMarkers.filter(m => m.visible).map(m => m.marker.getLatLng());
+            if (visible.length) map.fitBounds(L.latLngBounds(visible), { padding: [20, 20], maxZoom: 15 });
+        }
+
+        // --- PYTHON BRIDGE ---
+        window.py_add_markers = function(geojsonText) {
+            const data = JSON.parse(geojsonText);
+            addMarkers(data);
+            fitToMarkers();
+        };
+
+        window.py_set_filter = function(chain, enabled) {
+            setFilter(chain, enabled === 'true' || enabled === true);
+        };
+
+        window.py_set_all_filters = function(enabled) {
+            setAllFilters(enabled === 'true' || enabled === true);
+        };
+
+        window.py_get_visible_count = function() {
+            return allMarkers.filter(m => m.visible).length;
+        };
+
+        // --- INIT: request data from Python ---
+        if (window.py_ready) window.py_ready();
+    </script>
+</body>
+</html>

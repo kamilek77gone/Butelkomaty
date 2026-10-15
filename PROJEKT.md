@@ -3429,7 +3429,652 @@ wyciągnąć runtime
 Dino jest SPA (Nuxt 2) i nie startuje w headless Chromium na Surface Pro 2.
 Aby scraper działał, trzeba uruchomić Playwright w trybie okienkowym i kliknąć baner cookies oraz zamknąć pop‑up reklamy. Dopiero wtedy aplikacja Dino inicjalizuje runtime window.__NUXT__, który można zeskrobać.
 
+
+
+# Scalanie baz danych butelkomatów
+
+Przed rozpoczęciem reorganizacji projektu dane znajdowały się w czterech oddzielnych bazach odpowiadających poszczególnym sieciom handlowym.
+
+Źródłowe bazy:
+
+- Żabka – 8282 lokalizacje
+- Dino – 3165 lokalizacji
+- Biedronka – 1144 lokalizacje
+- Lidl – 1002 lokalizacje
+
+Łączna liczba rekordów źródłowych:
+
+13593
+
+---
+
+# Utworzenie skryptu scalającego
+
+Na potrzeby projektu przygotowano skrypt:
+
+```
+tools/scal_bazy.py
+```
+
+Jego zadaniem jest automatyczne:
+
+- odczytanie wszystkich baz źródłowych,
+- połączenie ich w jedną bazę,
+- sprawdzenie poprawności danych,
+- zapisanie wynikowej bazy projektu.
+
+---
+
+# Pierwszy problem
+
+Pierwsza wersja skryptu usuwała część rekordów.
+
+Po wykonaniu scalania uzyskano:
+
+```
+12886 rekordów
+```
+
+Brakowało:
+
+```
+707 lokalizacji
+```
+
+Po analizie okazało się, że algorytm usuwał rekordy Biedronki nieposiadające współrzędnych GPS.
+
+Problem został zdiagnozowany i usunięty.
+
+---
+
+# Poprawiona wersja
+
+Po przebudowie algorytmu skrypt został uruchomiony ponownie.
+
+Uzyskano poprawny wynik:
+
+Łączna liczba punktów:
+
+```
+13593
+```
+
+w tym:
+
+- automaty z współrzędnymi GPS – 5311
+- lokalizacje wymagające geokodowania – 8282
+
+Dodatkowo:
+
+- rekordy posiadające współrzędne GPS – 12449
+- rekordy bez współrzędnych GPS – 1144
+
+Nie usunięto żadnych poprawnych rekordów.
+
+Dokładne duplikaty:
+
+```
+0
+```
+
+---
+
+# Wynik scalania
+
+Po zakończeniu prac wszystkie dane projektu zostały zapisane w jednej bazie:
+
+```
+src/butelkomaty/baza_butelkomaty.json
+```
+
+Od tej chwili jest to główna baza danych aplikacji.
+
+Wszystkie przyszłe funkcje programu będą korzystały wyłącznie z tego pliku.
+
+Źródłowe pliki JSON pozostają zachowane w katalogu:
+
+```
+src/butelkomaty/data
+```
+
+i służą wyłącznie jako materiał źródłowy do ewentualnych przyszłych aktualizacji.
+
+---
+
+# Reorganizacja projektu
+
+Podczas porządkowania projektu utworzono logiczną strukturę katalogów.
+
+Powstały katalogi:
+
+```
+archive
+data
+docs
+resources
+scrapers
+tools
+```
+
+Przeniesiono między innymi:
+
+- skrypty scraperów → `scrapers`
+- narzędzia pomocnicze → `tools`
+- pliki JSON → `data`
+- stare analizy → `archive`
+- testy → `archive/tests`
+
+Dzięki temu katalog główny projektu został uporządkowany i zawiera jedynie najważniejsze elementy aplikacji.
+
+Skrypt `tools/scal_bazy.py` został następnie dostosowany do nowej struktury katalogów.
+
+Po ponownym uruchomieniu poprawnie odczytuje dane z:
+
+```
+data
+```
+
+oraz zapisuje wynik do:
+
+```
+src/butelkomaty/baza_butelkomaty.json
+```
+
+Końcowy wynik został ponownie zweryfikowany i potwierdzono poprawną liczbę:
+
+```
+13593 lokalizacje
+```
+
+# Dziennik prac – 21.07.2026
+
+## Cel sesji
+
+Głównym celem dzisiejszej sesji było uporządkowanie struktury projektu, usunięcie problemów z katalogami, poprawne skonfigurowanie repozytorium Git oraz opublikowanie projektu na GitHub.
+
+---
+
+# 1. Analiza struktury projektu
+
+Po wcześniejszym porządkowaniu katalogów zauważono, że projekt posiadał zagnieżdżoną strukturę.
+
+Przed rozpoczęciem prac wyglądała ona następująco:
+
+```
+GitHub
+└── Butelkomaty
+    ├── PROJEKT.md
+    └── butelkomaty
+        ├── pyproject.toml
+        ├── src
+        ├── .briefcase
+        ├── build
+        └── ...
+```
+
+Takie rozwiązanie powodowało problemy z:
+
+- Git
+- GitHub Desktop
+- Visual Studio Code
+- lokalizacją pliku pyproject.toml
+- uruchamianiem projektu z odpowiedniego katalogu
+
+---
+
+# 2. Diagnostyka Git
+
+Przeprowadzono diagnostykę repozytorium Git.
+
+Wykonano polecenie:
+
+```powershell
+git status
+```
+
+Wynik:
+
+```
+fatal: not a git repository (or any of the parent directories): .git
+```
+
+Następnie wykonano dodatkową diagnostykę lokalizacji repozytorium oraz sprawdzono katalog główny projektu.
+
+Wniosek:
+
+Projekt nie posiadał lokalnego repozytorium Git.
+
+---
+
+# 3. Diagnostyka GitHub Desktop
+
+Uruchomiono GitHub Desktop.
+
+Okazało się, że aplikacja otwierała stare, porzucone repozytorium:
+
+```
+apkabutelki
+```
+
+Natomiast projekt **Butelkomaty** nie był jeszcze repozytorium Git.
+
+Próba dodania projektu jako istniejącego repozytorium zakończyła się komunikatem:
+
+```
+This directory does not appear to be a Git repository.
+```
+
+Potwierdziło to wcześniejszą diagnozę.
+
+---
+
+# 4. Reorganizacja katalogów
+
+Po analizie całej struktury zdecydowano o uproszczeniu projektu.
+
+Stan przed zmianą:
+
+```
+Butelkomaty
+├── PROJEKT.md
+└── butelkomaty
+    ├── pyproject.toml
+    ├── src
+    ├── .briefcase
+    ├── build
+    └── ...
+```
+
+Wykonano następujące czynności:
+
+- przeniesiono całą zawartość folderu:
+
+```
+Butelkomaty\butelkomaty
+```
+
+do katalogu:
+
+```
+Butelkomaty
+```
+
+Następnie usunięto pusty folder:
+
+```
+butelkomaty
+```
+
+---
+
+# 5. Nowa struktura projektu
+
+Po zakończeniu reorganizacji uzyskano następującą strukturę:
+
+```
+Butelkomaty
+├── .briefcase
+├── build
+├── src
+├── tests
+├── pyproject.toml
+├── PROJEKT.md
+├── README.md
+├── LICENSE
+├── CHANGELOG
+├── .gitignore
+```
+
+Od tej chwili projekt posiada standardową strukturę BeeWare.
+
+---
+
+# 6. Test poprawności działania
+
+Po reorganizacji katalogów wykonano test uruchomienia aplikacji.
+
+Polecenie:
+
+```powershell
+briefcase dev
+```
+
+Wynik:
+
+✅ aplikacja uruchomiła się poprawnie.
+
+Potwierdzono, że reorganizacja nie spowodowała żadnych błędów.
+
+---
+
+# 7. Utworzenie repozytorium Git
+
+Za pomocą GitHub Desktop utworzono nowe lokalne repozytorium.
+
+Ustawienia:
+
+Nazwa:
+
+```
+Butelkomaty
+```
+
+Lokalizacja:
+
+```
+C:\Users\SURFACE\Documents\GitHub
+```
+
+README:
+
+```
+nie tworzono nowego
+```
+
+Git Ignore:
+
+```
+Python
+```
+
+License:
+
+```
+None
+```
+
+Repozytorium zostało utworzone poprawnie.
+
+---
+
+# 8. Pierwszy commit
+
+GitHub Desktop automatycznie wykonał pierwszy commit projektu.
+
+Nazwa commita:
+
+```
+Initial commit
+```
+
+Od tego momentu projekt posiada pełną historię zmian.
+
+---
+
+# 9. Publikacja projektu na GitHub
+
+Repozytorium zostało opublikowane na GitHub.
+
+Nazwa repozytorium:
+
+```
+Butelkomaty
+```
+
+Repozytorium ustawiono jako:
+
+```
+Private
+```
+
+Po zakończeniu publikacji GitHub Desktop wyświetlił przycisk:
+
+```
+Fetch origin
+```
+
+co potwierdziło poprawne połączenie lokalnego repozytorium z GitHub.
+
+---
+
+# 10. Weryfikacja publikacji
+
+Repozytorium otwarto w przeglądarce internetowej.
+
+Zweryfikowano obecność wszystkich najważniejszych elementów projektu:
+
+- src
+- tests
+- pyproject.toml
+- README.md
+- PROJEKT.md
+- CHANGELOG
+- LICENSE
+- .gitignore
+
+Potwierdzono poprawną publikację projektu.
+
+---
+
+# Stan projektu po zakończeniu sesji
+
+Na zakończenie dzisiejszej pracy projekt posiada:
+
+- działającą aplikację BeeWare,
+- poprawną strukturę katalogów,
+- uporządkowany projekt,
+- scaloną bazę danych zawierającą 13 593 punkty zwrotu,
+- działający Briefcase,
+- lokalne repozytorium Git,
+- pierwszy commit projektu,
+- prywatne repozytorium GitHub,
+- pełną synchronizację pomiędzy komputerem a GitHub.
+
+---
+
+# Wnioski
+
+Dzisiejsza sesja zakończyła etap konfiguracji środowiska oraz przygotowania projektu do dalszego rozwoju.
+
+Projekt osiągnął pierwszy ważny kamień milowy.
+
+Od tej chwili wszystkie kolejne prace będą prowadzone zgodnie z profesjonalnym cyklem pracy:
+
+1. implementacja nowej funkcji,
+2. testowanie,
+3. wykonanie commita,
+4. publikacja zmian na GitHub.
+
+Pozwoli to zachować pełną historię projektu oraz możliwość bezpiecznego powrotu do każdej wcześniejszej wersji aplikacji.
+
+============================================================
+DATA: 2026-07-21
+TEMAT: Odzyskanie pełnej bazy Biedronki i wstrzymanie prac nad Netto
+============================================================
+
+STAN PRAC
+---------
+Prace nad integracją sieci Netto zostały praktycznie zakończone. W wyniku wcześniejszych błędów podczas scalania baz danych konieczne było jednak przerwanie prac nad Netto i zajęcie się odbudową danych Biedronki.
+
+USTALENIA
+---------
+- Odnaleziono archiwalny skrypt:
+  archive/tests/test_puste_api.py
+
+- Skrypt nadal poprawnie działa i pobiera dane z oficjalnego API Biedronki:
+  https://www.biedronka.pl/api/shop/cities
+
+- API zwraca:
+  - status 200,
+  - 3843 sklepy,
+  - komplet współrzędnych GPS,
+  - identyfikatory sklepów,
+  - pełne dane adresowe oraz dodatkowe informacje.
+
+- Dane zostały zapisane do nowego pliku:
+  biedronka_pelna.json
+
+NAJWAŻNIEJSZE ODKRYCIE
+---------------------
+Okazało się, że plik baza_biedronka_recyklomaty.json NIE używa tych samych identyfikatorów co oficjalne API Biedronki.
+
+Przykład:
+- pełna baza API:
+  id = 7617
+- baza recyklomatów:
+  id = 37
+
+Oznacza to, że wcześniejsze założenie o możliwości prostego połączenia obu baz po polu "id" było błędne.
+
+KOLEJNY KROK
+------------
+Należy przeanalizować plik:
+
+data/biedronka.json
+
+i ustalić, czy zawiera mapowanie pomiędzy identyfikatorami recyklomatów a identyfikatorami sklepów z oficjalnego API.
+
+Dopiero po potwierdzeniu sposobu mapowania będzie można bezpiecznie oznaczyć sklepy posiadające recyklomaty i odbudować kompletną bazę Biedronki.
+
+STATUS
+------
+✔ API Biedronki ponownie działa.
+✔ Odzyskano pełną bazę 3843 sklepów.
+✔ Netto pozostaje ukończone.
+⏸ Prace nad Netto zostały tymczasowo wstrzymane wyłącznie z powodu konieczności naprawy i dokończenia integracji Biedronki.
+
 Kamil — to jest kompletne podsumowanie całej sesji Dino, gotowe do wklejenia do kroniki.
+
+=================================================
+
+*Dziennik utrzymywany w trybie: jeden kod, jeden plik, jedna komenda.*
+**Dziennik utrzymywany w trybie: jeden kod, jeden plik, jedna komenda.**
+
+=================================================
+
+[DATA: 2026-10-15] ETAP: PRZYGOTOWANIE DO PUBLIKACJE W GITHUB
+
+## CO ZROBIONO
+
+1. .gitignore — pełne wykluczenie artefaktów budowania i danych developerskich:
+   - .briefcase/, build/, dist/, windows/ (Briefcase)
+   - __pycache__/, *.pyc (Python)
+   - src/butelkomaty.dist-info/ (metadane pakietu)
+   - src/butelkomaty/archive/ (stare skrapetry, analiza JS — zawierały klucz API Lidl)
+   - src/butelkomaty/scrapers/, src/butelkomaty/tools/ (narzędzia developerskie)
+   - src/butelkomaty/porzadkuj_projekt.py, utworz_strukture.py (skrypty porządkowe)
+   - src/butelkomaty/docs/ (dokumentacja developerska)
+   - biedronka_pelna.json (4 MB, surowy plik danych niepotrzebny w aplikacji)
+
+2. LICENSE — pełny tekst licencji MIT (zastąpiono jednowierszowy plik)
+
+3. README.md — kompletna dokumentacja: funkcje, wymagania, uruchomienie lokalne, budowanie Androida przez GitHub Actions, struktura projektu, uwagi dotyczące mapy, brak kluczy API
+
+4. .github/workflows/android.yml — ulepszony workflow:
+   - dodano android-actions/setup-android@v3 (Android SDK)
+   - dodano akceptację licencji Android SDK (sdkmanager --licenses)
+   - ścieżka artefaktów: build/butelkomaty/android/**/*.apk
+
+5. Usunięto z trackingu git (git rm --cached):
+   - src/butelkomaty.dist-info/ (4 pliki)
+   - src/butelkomaty/archive/ (~140 plików: skrapetry, dino JS, testy archiwalne)
+   - src/butelkomaty/scrapers/ (4 pliki, w tym scraper_lidl.py z kluczem API)
+   - src/butelkomaty/tools/scal_bazy.py
+   - src/butelkomaty/data/baza_*_recyklomaty.json, biedronka.json, miasta_biedronka.json (8 starych plików danych)
+   - src/butelkomaty/porzadkuj_projekt.py
+
+6. Stage'owane do commita:
+   - .gitignore, LICENSE, README.md, pyproject.toml, PROJEKT.md (zmodyfikowane)
+   - .github/workflows/android.yml (nowy)
+   - src/butelkomaty/app.py (zmodyfikowany — RankingService, przycisk 🏆)
+   - src/butelkomaty/baza_butelkomaty.json (zmodyfikowany — baza aplikacji)
+   - src/butelkomaty/data/sklepy_mapa.json (zmodyfikowany)
+   - src/butelkomaty/resources/map.html (nowy)
+   - src/butelkomaty/services/__init__.py, baza.py, mapa.py, ranking.py (nowe/zmodyfikowane)
+   - src/butelkomaty/views/__init__.py, main_view.py, ranking_view.py (nowe/zmodyfikowane)
+   - src/butelkomaty/models/__init__.py, utils/__init__.py (nowe)
+   - tests/ (butelkomaty.py, test_app.py, __init__.py)
+
+## JAK WYKONAĆ COMMIT (GitHub Desktop lub wiersz poleceń)
+
+- git add -A (wszystko już zostage'owane)
+- git commit -m "Przygotowanie do publikacji: APK via GitHub Actions, ranking, czyszczenie repo"
+- git push -> workflow buduje APK automatycznie
+
+## CO WYMAGA WERYFIKACJI PRZEZ GITHUB ACTIONS (nie można zweryfikować lokalnie)
+
+- Czy briefcase build -a android zakończy się sukcesem na ubuntu-latest (Android SDK, licencje)
+- Czy briefcase package -a android wygeneruje poprawny APK
+- Czy mapa z CDN (Leaflet, OpenStreetMap) działa na Androidzie (uprawnienie INTERNET)
+- Czy baza_butelkomaty.json (12 MB) zostanie poprawnie spakowana do APK
+
+=================================================
+
+*Dziennik utrzymywany w trybie: jeden kod, jeden plik, jedna komenda.*
+**Dziennik utrzymywany w trybie: jeden kod, jeden plik, jedna komenda.**
+
+=================================================
+
+[DATA: 2026-10-15] ETAP: FUNKCJE SPOŁECZNOŚCIOWE - RANKING I ZNIŻKI
+
+## CO ZROBIONO
+
+1. src/butelkomaty/services/ranking.py — nowy serwis RankingService:
+   - przechowuje zwroty butelek w lokalnym pliku data/ranking.json
+   - zapisz_zwrot(user_id, user_name, ilosc, data) — rejestruje zwrot użytkownika
+   - ranking_tygodniowy() — zwraca posortowaną listę najlepszych w bieżącym tygodniu (poniedziałek–niedziela)
+   - znizki(top_n=3) — zwraca zniżki dla najlepszych: 1. miejsce 10%, 2. 7%, 3. 5%
+
+2. src/butelkomaty/views/ranking_view.py — nowy widok RankingView:
+   - tabela z pozycją, nazwą użytkownika i liczbą zwrotów w tym tygodniu
+   - sekcja zniżek dla najlepszych (🎟️ Zniżki dla najlepszych)
+
+3. src/butelkomaty/app.py — inicjalizacja RankingService i przekazanie do MainView
+
+4. src/butelkomaty/views/main_view.py — nowy przycisk 🏆 w pasku górnym (obok ☰), otwiera osobne okno rankingu po kliknięciu
+   - naprawiono wcięcie metody toggle_filter (błąd z oryginału)
+
+## JAK DZIAŁA
+
+- Użytkownik zwraca butelki → zapisywany zwrot z datą i ilością
+- Co tydzień liczony jest ranking od poniedziałku
+- Trzech pierwszych dostaje zniżki w wybranych sklepach (wyświetlane w widoku rankingu)
+- Przycisk 🏆 w górnym pasku otwiera okno rankingu
+
+## NASTĘPNY KROK
+
+Połączyć zapis zwrotów z rzeczywistym flow zgłaszania/statusu automatu (na razie dane testowe).
+
+=================================================
+
+*Dziennik utrzymywany w trybie: jeden kod, jeden plik, jedna komenda.*
+**Dziennik utrzymywany w trybie: jeden kod, jeden plik, jedna komenda.**
+
+=================================================
+
+[DATA: 2026-10-15] ETAP: BUDOWA APK NA GITHUB ACTIONS
+
+## CO ZROBIONO
+
+1. pyproject.toml — dodano cel Android w Briefcase:
+   - [tool.briefcase.app.butelkomaty.android] z requires = ["toga-android"]
+   - [tool.briefcase.app.butelkomaty.windows] z requires = ["toga-winforms"]
+   - usunięto toga-winforms ze wspólnych zależności projektu i z requires apki (pozostało tylko "toga")
+   - sources = ["src/butelkomaty"], resources = ["src/butelkomaty/resources"] — baza_butelkomaty.json i map.html trafią do APK
+
+2. .gitignore — dodano: .briefcase/, build/, dist/, windows/ (artefakty Briefcase nie wchodzą do repo)
+
+3. .github/workflows/android.yml — nowy workflow "Build Android APK":
+   - uruchamia się na push do main/master oraz ręcznie (workflow_dispatch)
+   - Python 3.11, JDK 17 (temurin), briefcase
+   - briefcase build -a android -> briefcase package -a android
+   - wrzuca APK jako artifact butelkomaty-android-apk (retencja 30 dni)
+
+## JAK SKOMPULOWAĆ APK NA GITHUB
+
+- git add .gitignore pyproject.toml .github/workflows/android.yml
+- git commit -m "Add Android target and GitHub Actions APK workflow"
+- git push -> workflow uruchamia się sam, APK w zakładce Actions -> artifact
+
+## UWAGI DO DZIAŁANIA MAPY NA ANDROIDIE
+
+- map.html ładuje Leaflet i kafelki OpenStreetMap z CDN (unpkg.com, openstreetmap.org)
+- na Androidzie wymagane uprawnienie INTERNET w AndroidManifest.xml
+- file:// sciezka do map.html moze wymagac dostosowania pod Androida (app.resources_path / assets)
+
+## NASTĘPNY KROK
+
+Skommitować i wypchnąć zmiany, uruchomić workflow, pobrać gotowe APK z artifactu.
 
 =================================================
 

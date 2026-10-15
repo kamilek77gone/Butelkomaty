@@ -8,7 +8,6 @@ version = "0.0.1"
 description = "Aplikacja do obsługi butelkomatów"
 dependencies = [
     "toga",
-    "toga-winforms",
 ]
 license = "MIT"
 license-files = ["LICENSE"]
@@ -25,10 +24,11 @@ author_email = "kamilek77gone@example.com"
 formal_name = "Butelkomaty"
 description = "Aplikacja do obsługi butelkomatów"
 sources = ["src/butelkomaty"]
-requires = [
-    "toga",
-    "toga-winforms",
-]
+resources = ["src/butelkomaty/resources"]
+requires = ["toga"]
+
+[tool.briefcase.app.butelkomaty.android]
+requires = ["toga-android"]
 
 [tool.briefcase.app.butelkomaty.windows]
-requires = []
+requires = ["toga-winforms"]
