@@ -28,13 +28,17 @@ jobs:
           python -m pip install --upgrade pip
           pip install briefcase
 
-      - name: Build Android project
+      - name: Create Android project
         run: |
-          briefcase build -a android
+          briefcase create -a android butelkomaty
+
+      - name: Build Android app
+        run: |
+          briefcase build -a android butelkomaty
 
       - name: Package Android APK
         run: |
-          briefcase package -a android
+          briefcase package -a android butelkomaty
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
