@@ -30,15 +30,15 @@ jobs:
 
       - name: Create Android project
         run: |
-          briefcase create -a android butelkomaty
+          briefcase create android gradle -a butelkomaty
 
       - name: Build Android app
         run: |
-          briefcase build -a android butelkomaty
+          briefcase build android gradle -a butelkomaty
 
       - name: Package Android APK
         run: |
-          briefcase package -a android butelkomaty
+          briefcase package android gradle -a butelkomaty -p apk
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
