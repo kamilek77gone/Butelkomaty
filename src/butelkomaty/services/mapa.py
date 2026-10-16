@@ -10,17 +10,27 @@ from typing import Dict, List, Any
 
 
 class MapaService:
-    def __init__(self):
-        self.base_path = Path(__file__).parent.parent
+    def __init__(self, resources_path=None):
+        if resources_path is not None:
+            self.base_path = Path(resources_path)
+        else:
+            self.base_path = Path(__file__).parent.parent
         self.data_file = self.base_path / "baza_butelkomaty.json"
         self._cache = None
+        self._load_error = None
 
     def load_data(self) -> Dict[str, Any]:
         """Ładuje bazę danych z pliku JSON."""
         if self._cache is not None:
             return self._cache
-        with open(self.data_file, 'r', encoding='utf-8') as f:
-            self._cache = json.load(f)
+        if self._load_error is not None:
+            raise self._load_error
+        try:
+            with open(self.data_file, 'r', encoding='utf-8') as f:
+                self._cache = json.load(f)
+        except FileNotFoundError as exc:
+            self._load_error = exc
+            raise
         return self._cache
 
     def get_geojson(self, chains: List[str] = None) -> str:

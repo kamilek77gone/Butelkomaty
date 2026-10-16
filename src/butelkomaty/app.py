@@ -15,7 +15,18 @@ class Butelkomaty(toga.App):
 
     def startup(self):
         # Inicjalizacja serwisów
-        self.mapa_service = MapaService()
+        try:
+            self.mapa_service = MapaService(resources_path=self.resources_path)
+        except Exception as exc:
+            self.mapa_service = None
+            self.main_window = toga.MainWindow(title=self.formal_name)
+            self.main_window.content = toga.Label(
+                f'Błąd uruchomienia: nie można wczytać bazy danych ({exc}).',
+                style=Pack(padding=20)
+            )
+            self.main_window.show()
+            return
+
         self.ranking_service = RankingService()
         
         # Budowa widoku głównego

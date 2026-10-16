@@ -62,7 +62,7 @@ class MainView:
         self.filter_bar = toga.ScrollContainer(style=Pack(height=50, background_color='#f5f5f5'))
         filter_box = toga.Box(style=Pack(direction=ROW, padding=8, gap=8))
         
-        chains = self.mapa_service.get_chains()
+        chains = self.mapa_service.get_chains() if self.mapa_service else []
         for chain in chains:
             chip = self.create_filter_chip(chain)
             self.filter_chips[chain] = chip
@@ -136,6 +136,8 @@ class MainView:
 
     def load_markers(self):
         if not self._map_ready:
+            return
+        if self.mapa_service is None:
             return
         geojson = self.mapa_service.get_geojson()
         escaped = geojson.replace('\\', '\\\\').replace('"', '\\"').replace('\n', '\\n')
