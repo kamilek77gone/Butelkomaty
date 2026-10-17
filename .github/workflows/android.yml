@@ -1,13 +1,16 @@
-name: Build Android APK
+name: Build Android App
 
 on:
   push:
-    branches: [main, master]
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
   workflow_dispatch:
 
 jobs:
-  build-android:
+  build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -15,36 +18,38 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: '3.11'
+          cache: 'pip'
 
-      - name: Set up Java (JDK 17)
+      - name: Set up Java JDK
         uses: actions/setup-java@v4
         with:
-          distribution: "temurin"
-          java-version: 17
+          distribution: 'temurin'
+          java-version: '17'
 
-      - name: Install Briefcase
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libglib2.0-0 libgirepository1.0-dev zip unzip
+
+      - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
           pip install briefcase
 
-      - name: Create Android project
+      - name: Create Android App with Briefcase
         run: |
-          briefcase create android gradle -a butelkomaty
+          briefcase create android --no-input
 
-      - name: Build Android app
+      - name: Build Android App Package
         run: |
-          briefcase build android gradle -a butelkomaty
+          briefcase build android --no-input
 
-      - name: Package Android APK
-        run: |
-          briefcase package android gradle -a butelkomaty -p apk
-
-      - name: Upload APK artifact
+      - name: Upload APK / Android Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: butelkomaty-android-apk
+          name: android-app-build
           path: |
-            build/butelkomaty/android/**/*.apk
-            dist/*.apk
-          retention-days: 30
+            build/**/android/gradle/app/build/outputs/apk/**/*.apk
+            build/**/android/gradle/app/build/outputs/bundle/**/*.aab
+          if-no-files-found: warn
