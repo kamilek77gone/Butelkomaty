@@ -1,18 +1,9 @@
-import json
-import os
-
-
-class BazaDanych:
-    def __init__(self):
-        # Pobieranie katalogu, w którym znajduje się ten plik
-        self.base_dir = os.path.dirname(os.path.abspath(__file__))
-        self.baza_path = os.path.join(self.base_dir, "..", "baza_butelkomaty.json")
-
-    def wczytaj_dane(self):
-        try:
-            if os.path.exists(self.baza_path):
-                with open(self.baza_path, "r", encoding="utf-8") as f:
-                    return json.load(f)
-        except Exception as e:
-            print(f"Błąd podczas wczytywania bazy: {e}")
-        return []
+[
+  {
+    "id": 1,
+    "nazwa": "Butelkomat Przykładowy",
+    "miasto": "Wrocław",
+    "adres": "Rynek 1",
+    "status": "aktywny"
+  }
+]
